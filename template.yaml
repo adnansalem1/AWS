@@ -1,38 +1,7 @@
-AWSTemplateFormatVersion: '2010-09-09'
-Description: Erstellt eine EC2 t2.micro Instanz mit spezifischem AMI und Security Group.
-
-Parameters:
-  SubnetId:
-    Type: String
-    Default: ""
-    Description: Optional. SubnetId, in die die Instanz gestartet werden soll. Leer lassen, um die Standard-Subnet-Auswahl zu verwenden.
-
-Conditions:
-  UseSubnet: !Not [!Equals [!Ref SubnetId, ""]]
-
+AWSTemplateFormatVersion: "2010-09-09"
 Resources:
-  MyEC2Instance:
-    Type: AWS::EC2::Instance
+  HTWInstance:
+    Type: "AWS::EC2::Instance"
     Properties:
-      InstanceType: t2.micro
-      ImageId: ami-0793ace9dd5de0095
-      SecurityGroupIds:
-        - sg-050596cc34e89dc28
-      SubnetId: !If [UseSubnet, !Ref SubnetId, !Ref "AWS::NoValue"]
-      TagSpecifications:
-        - ResourceType: instance
-          Tags:
-            - Key: Name
-              Value: MyEC2Instanceilie
-
-Outputs:
-  InstanceId:
-    Description: ID der gestarteten EC2-Instanz
-    Value: !Ref MyEC2Instance
-  PublicIp:
-    Description: Öffentliche IP-Adresse (falls zugewiesen)
-    Value: !GetAtt MyEC2Instance.PublicIp
-
-# Hinweis: CloudFormation-Stacks sind regionspezifisch.
-# Beim Erstellen/Deployen des Stacks die Region auf eu-west-1 setzen (z. B. mit --region eu-west-1).
-# Die angegebene Security Group (sg-050596cc34e89dc28) muss in dieser Region existieren.
+      ImageId: "ami-05e122cc2338f1e32"
+      InstanceType: "t2.micro"
