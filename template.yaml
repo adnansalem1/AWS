@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Einfaches CloudFormation-Template zum Starten einer EC2-Instanz.
+
+Parameters:
+  SubnetId:
+    Type: String
+    Default: ""
+    Description: Optional. SubnetId, in die die Instance gestartet werden soll. Leer lassen um die Standard-Subnet-Auswahl zu verwenden.
+
+Conditions:
+  UseSubnet: !Not [!Equals [!Ref SubnetId, ""]]
+
+Resources:
+  EC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-03026aa8227f2f9c3
+      InstanceType: t2.micro
+      SecurityGroupIds:
+        - sg-0be14659a6379fe7a
+      SubnetId: !If [UseSubnet, !Ref SubnetId, !Ref "AWS::NoValue"]
+      TagSpecifications:
+        - ResourceType: instance
+          Tags:
+            - Key: Name
+              Value: CFN-EC2-Instance
+
+Outputs:
+  InstanceId:
+    Description: ID der gestarteten EC2-Instanz
+    Value: !Ref EC2Instance
+  PublicIp:
+    Description: Öffentliche IP-Adresse (falls zugewiesen)
+    Value: !GetAtt EC2Instance.PublicIp
+
+# Hinweis: CloudFormation-Stacks sind regionspezifisch. Beim Erstellen/Deployen des Stacks die Region auf eu-west-1 setzen (z. B. mit --region eu-west-1). Die angegebene Security Group muss in dieser Region existieren.
+
