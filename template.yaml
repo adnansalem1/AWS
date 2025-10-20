@@ -14,7 +14,7 @@ Resources:
   EC2Instance:
     Type: AWS::EC2::Instance
     Properties:
-      ImageId: ami-03026aa8227f2f9c3
+      ImageId: ami-05e122cc2338f1e32
       InstanceType: t2.micro
       SecurityGroupIds:
         - sg-0be14659a6379fe7a
@@ -24,6 +24,7 @@ Resources:
           Tags:
             - Key: Name
               Value: CFN-EC2-Instance
+
 
 Outputs:
   InstanceId:
